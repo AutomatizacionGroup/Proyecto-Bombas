@@ -1,0 +1,52 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[margin = 1.5in]{geometry}
+\usepackage{graphicx}
+\graphicspath{{/home/smichelena/Desktop/Automatizacion/proyecto_bombas_andres/}}
+
+\title{Implementación de SCADA en sistema de bombas domesticó}
+\author{Grupo Automatizacion}
+
+\begin{document}
+	
+	\maketitle
+	
+	\section{Objetivo}
+	
+	El objeto de este proyecto inicial es familiarizarse con las distintas tecnologías, tanto de software como de hardware, que la compañía utilizara para implementar soluciones de IoT a nivel industrial.
+	
+	\section{Tecnologías}
+	
+	\subsection{Hardware}
+	Se utilizara un PLC de NodeMCU, el cual cuenta con un modulo de WiFi, 10 pines de GPIO y un firmware hecho para implementar soluciones con IoT.
+	
+	\begin{figure}[h]
+		\centering
+		\caption{pinout del PLC de NodeMCU}
+		\includegraphics[width = 5cm, height = 5cm]{plc_nodemcu}
+	\end{figure}
+	
+	\subsection{software}
+	En cuanto a software, se utilizara Ignition como SCADA, el cual tiene un modulo que implementa MQTT como protocolo de comunicación entre el PLC y el servidor de SCADA.
+	
+	
+	\begin{figure}[h]
+		\centering
+		\caption{Arquitectura estándar de Ignition}
+		\includegraphics[width=10cm, height=8cm]{arc_igtion}
+	\end{figure}
+	
+	\section{Objetivos}
+	
+	\begin{enumerate}
+		\item Lograr comunicación bidireccional entre el PLC de NodeMCU y el servidor de Ignition
+		\item Hacer análisis de data obtenida usando la plataforma de Ignition
+		\item Crear algoritmo que ajuste parámetros de funcionamiento automáticamente
+		\item Implementar sistema de alarmas en base a funcionamiento del sistema (ej, Esta entrando agua, etc)
+	\end{enumerate}
+	
+	\section{arquitectura a usar}
+	
+	
+\end{document}
