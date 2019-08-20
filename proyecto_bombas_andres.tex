@@ -19,13 +19,77 @@
 	\section{Tecnologías}
 	
 	\subsection{Hardware}
+	
+	\subsubsection{NodeMCU}
+	
 	Se utilizara un PLC de NodeMCU, el cual cuenta con un modulo de WiFi, 10 pines de GPIO y un firmware hecho para implementar soluciones con IoT.
+	
+	\vspace{5mm}
+	
+	\underline{Especificaciones:}
+	
+	\begin{itemize}
+		\item Microcontroller: Tensilica 32-bit RISC CPU Xtensa LX106
+		
+		\item Operating Voltage: 3.3V
+		
+		\item Input Voltage: 7-12V
+		
+		\item Digital I/O Pins (DIO): 16
+		
+		\item Analog Input Pins (ADC): 1
+		
+		\item UARTs: 1
+		
+		\item SPIs: 1
+		
+		\item I2Cs: 1
+		
+		\item Flash Memory: 4 MB
+		
+		\item SRAM: 64 KB
+		
+		\item Clock Speed: 80 Mhz
+		
+		\item Wi-Fi: IEEE 802.11 b/g/n
+	\end{itemize}
 	
 	\begin{figure}[h]
 		\centering
 		\caption{pinout del PLC de NodeMCU}
 		\includegraphics[width = 5cm, height = 5cm]{plc_nodemcu}
 	\end{figure}
+	
+	\subsubsection{Raspberry $\pi$}
+	
+	Se utilizara un Raspberry Pi model B+ con Ignition Edge como broker entre el NodeMCU y el servidor central de Ignition.
+	
+	\vspace{5mm}
+	
+	\underline{Especificaciones:}
+	
+	\begin{itemize}
+		   \item Broadcom BCM2837B0, Cortex-A53 (ARMv8) 64-bit SoC @ 1.4GHz
+		   \item 1GB LPDDR2 SDRAM
+		   \item 2.4GHz and 5GHz IEEE 802.11.b/g/n/ac wireless LAN, Bluetooth 4.2, BLE
+		   \item Gigabit Ethernet over USB 2.0 (maximum throughput 300 Mbps)
+		   \item Extended 40-pin GPIO header
+		   \item Full-size HDMI
+		   \item 4 USB 2.0 ports
+		   \item CSI camera port for connecting a Raspberry Pi camera
+		   \item DSI display port for connecting a Raspberry Pi touchscreen display
+		   \item 4-pole stereo output and composite video port
+		   \item Micro SD port for loading your operating system and storing data
+		   \item 5V/2.5A DC power input
+		   \item Power-over-Ethernet (PoE) support (requires separate PoE HAT)
+	\end{itemize}
+	
+	\begin{figure}[h]
+		\centering
+		\caption{pinout y puertos del Raspberry Pi Model B+}
+		\includegraphics[width=10cm, height=8cm]{rasppi}
+	\end{figure}
+	
 	
 	\subsection{software}
 	En cuanto a software, se utilizara Ignition como SCADA, el cual tiene un modulo que implementa MQTT como protocolo de comunicación entre el PLC y el servidor de SCADA.
@@ -37,6 +101,76 @@
 		\includegraphics[width=10cm, height=8cm]{arc_igtion}
 	\end{figure}
 	
+	\subsubsection{Instalación de Ignition Edge en raspberry pi:}
+	
+	Una guia detallada de como instalar Ignition Edge en el raspberry Pi puede encontrarse en:
+	
+	\vspace{5mm}
+	
+	https://support.inductiveautomation.com/index.php?/Knowledgebase/Article/View/118/2/installing-ignition-edge-on-raspberry-pi
+	
+	\vspace{5mm}
+	
+	Sin embargo, hay ciertos pasos que se tienen que modificar:
+	
+	\vspace{5mm}
+	
+	\underline{Paso 2 de la guía:}
+	
+	\vspace{5mm}
+	
+	En la guía, el comando para hacer unzip del archivo descargado dice que hay que usar el comando:
+	
+	\begin{verbatim}
+		sudo unzip ./Ignition-Linux-armhf-7.9.2 -d /usr/local/ignition
+	\end{verbatim}
+	
+	Este comando se debe reemplazar por:
+	
+	\begin{verbatim}
+		sudo unzip ./Ignition-Linux-armhf-8.0.3 -d /usr/local/ignition
+	\end{verbatim}
+	
+	puesto la versión que se descargo (y que esta en el directorio que se tiene) es la 8.0.3, no la 7.9.2 
+	
+	\underline{Paso 4 de la guía:}
+	
+	\vspace{5mm}
+	
+	En la guía, el comando que sale para hacer que los files sean ejecutables es:
+	
+	\begin{verbatim}
+		sudo chmod +x ignition.sh ignition-gateway gcu.sh
+	\end{verbatim}
+	
+	sin embargo, el comando que se debe usar (sale en el archivo llamado README, el cual esta en la carpeta de Edge que se descargo) es:
+	
+	\begin{verbatim}
+		sudo chmod +x *.sh
+	\end{verbatim}
+	
+	\underline{Paso 5 de la guía:}
+	
+	\vspace{5mm}
+	
+	Si el comando: 
+	
+	\begin{verbatim}
+		sudo ./ignition.sh start
+	\end{verbatim}
+	
+	no funciona, se tiene que ganar privilegios de superuser, para lo cual se hace el comando:
+	
+	\begin{verbatim}
+		sudo su
+	\end{verbatim}
+	
+	Seguido de:
+	
+	\begin{verbatim}
+		./ignition.sh start
+	\end{verbatim}
+	
 	\section{Objetivos}
 	
 	\begin{enumerate}
@@ -46,7 +180,9 @@
 		\item Implementar sistema de alarmas en base a funcionamiento del sistema (ej, Esta entrando agua, etc)
 	\end{enumerate}
 	
-	\section{arquitectura a usar}
+	\section{Arquitectura a usar}
+	
+	Se utilizara una arquitectura simple donde el servidor central de Ignition sera un PC, seguido de un gateway que servirá como broker de datos el cual sera el raspberry pi el cual tendrá conexión con el  PLC NodeMCU mediante el TCP Modbus o mediante MQTT.
 	
 	
 \end{document}
