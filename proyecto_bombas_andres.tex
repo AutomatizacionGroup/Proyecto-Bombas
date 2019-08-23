@@ -184,5 +184,85 @@
 	
 	Se utilizara una arquitectura simple donde el servidor central de Ignition sera un PC, seguido de un gateway que servirá como broker de datos el cual sera el raspberry pi el cual tendrá conexión con el  PLC NodeMCU mediante el TCP Modbus o mediante MQTT.
 	
+	\section{variables a medir en el sistema de bombas}
+	
+	La experiencia que se quiere lograr al implementar un sistema de IoT se puede resumir en los siguientes puntos:
+	
+	\begin{itemize}
+		\item Maximizar la disponibilidad de agua para el usuario
+		\item Mantener flujo/presión de agua constante en escenarios de uso elevado
+		\item Alertar fallas o posibles futuros problemas
+	\end{itemize}
+	
+	Para lograr esto, desde el punto de vista técnico se tienen que considerar los siguientes puntos:
+	
+	\vspace{5mm}
+	
+	\underline{Detección de entrada de agua:}
+	
+	\vspace{5mm}
+	
+	El agua que viene de hidrocapital no es de entrada constante, es decir, no todas los días hay, por lo tanto, detectar cuando entra agua es crucial para la elaboración de un esquema de ahorro.
+	
+	Esta detección se hace mediante un suiche de presión digital, el cual marca 0v cuando no esta entrando agua y +5v cuando si esta entrando.
+	
+	En base a esto, se va a construir un histórico de entrada de agua, el cual permite pronosticar cuando va a volver a entrar y también permite implementar un esquema de ahorro en la eventualidad de que no haya entrado agua en los días habituales. 
+	
+	\vspace{5mm}
+	
+	\underline{Almacenaje:}
+	
+	\vspace{5mm}
+	
+	El nivel del tanque es una variable de alta importancia, puesto a partir de ella se puede estimar el consumo de agua y se puede alertar al usuario de bajos niveles de agua en el tanque.
+	
+	\vspace{15mm}
+	
+	\underline{Consumo:}
+	
+	\vspace{5mm}
+	
+	El consumo, como anteriormente mencionado, es una variable que se estima usando la diferencia en el nivel de tanque, se puede definir como:
+	
+	$$ C = \frac{\Delta V}{\Delta t} $$
+	
+	Donde: $\Delta V$ es la diferencia de volúmenes de agua en el tanque en litros, lo cual se computa midiendo el nivel del tanque y conociendo su capacidad y $\Delta t$ es el intervalo de tiempo en el cual se desea medir el consumo en horas.
+	Este computo se puede realizar tanto para medir un "consumo promedio" a lo largo de varios días, como para detectar un consumo máximo.
+	La medición del consumo máximo es de alta importancia para la realización de un esquema de ahorros, esta se puede realizar calculando el consumo cada intervalo de tiempo $\Delta t_i$ y viendo en cual intervalo el consumo fue mayor.
+	Para maximizar la disponibilidad de agua del usuario, el programa debería calcular el consumo promedio, el consumo máximo diario/semanal, y el consumo por hora, y en base a esto hacer las siguientes acciones:
+	
+	\begin{itemize}
+		\item Crear un sistema de ahorro haciendo analítica sobre los consumos calculados
+		\item Alertar al usuario de un alto consumo
+		\item Dado un consumo excesivamente alto, sugerir la ocurrencia de una falla
+		\item puesto un consumo excesivamente bajo, preguntar al usuario si desea cerrar llave de paso a la casa.
+	\end{itemize}
+	
+	\vspace{5mm}
+	
+	\underline{Mantención del flujo constante en escenario de alto uso:}
+	
+	\vspace{5mm}
+	
+	Esto se va a hacer regulando el tamaño de la banda muerta de presión de operación de manera de que la presión de operación mínima (para la cual las bombas arrancan) sea suficientemente alta.
+	
+	\subsection{Lista de variables que medirá el PLC:}
+	
+	\begin{enumerate}
+		\item (digital) Presión hidrocapital
+		\item (digital) Presión sistema
+		\item (Analógica) 4 potenciómetros que determinan puntos de operacion del sistema
+		\item (Analógica) Nivel tanque
+	\end{enumerate}
+	
+	\subsection{Lista de variables computadas remotamente:}
+	
+	\begin{enumerate}
+		\item Volumen de agua en almacenamiento
+		\item consumo promedio
+		\item consumo por hora
+		\item consumo máximo del día
+		\item consumo máximo de la semana
+	\end{enumerate}
 	
 \end{document}
