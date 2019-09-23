@@ -1,0 +1,55 @@
+Funcionalidad (en alto nivel):
+
+1) se leen valores criticos:
+	1.1) se lee nivel de tanque (mqtt)
+	1.2) se lee el estado de entrada de agua de hidrocapital
+	
+2) se leen valores de setpoint:
+	2.1) condiciones para leer setpoints (se tiene que cumplir al menos 1 de las siguientes condiciones) :
+		a) es primera vez que el sistema esta corriendo
+		b) el usuario marco el boton de cambiar puntos de operacion:
+				2.1.1) Proceso de cambio de puntos de operacion:
+				2.1.1.1) Se presiona el boton, y se mantiene presionado hasta que se termine el proceso
+				2.1.1.2) Se mueven perillas hasta llegar a valores deseados
+				2.1.1.3) se suelta boton de cambio de puntos de operacion
+		c) se detectaron bajos niveles de tanque, se cambia presion de operacion a presion de operacion en reserva
+
+3) se lee presion instantanea:
+
+	caso 1) Si la presion esta por debajo de presion minima:
+	
+		3.1.1) Se activa el bombeo:
+	 		3.1.2) se activa una bomba:
+	 			3.1.2.1) condiciones para activar una bomba:
+	 				a) no se puede activar la misma bomba 2 veces seguidad, es decir, se activa la bomba que estuvo inactiva en el ciclo de bombeo 
+	 				   anterior.
+	 				b) tiene que haber flujo en la salida
+	 				c) despues del time delay, si se lee que el flujo en la salida de la bomba es nulo  3 veces, se alterna la bomba
+	 	3.1.3) se activa el time delay
+	 	3.1.4) se lee valor del flujo en la salida de la bomba respectiva
+	 		caso 1) hay flujo en la salida: 
+	 					se lee la presion instantanea: 
+	 						a) si la presion instantanea es la presion nominal se pasa al paso (4)
+	 						b) si la presion instantanea es distinta, se mantiene la bomba prendida
+	 		caso 2) no hay flujo en la salida:
+	 					a) se apaga bomba, se va al paso (3.1.2), si se llega a este punto 3 veces, se apaga bomba y se prende la otra bomba
+	 					b) si se llega a este punto despues de alternar una bomba 1 vez, se apaga el sistema por completo y se emite una alerta, se espera por un reboot manual.
+	 					
+	 caso 2) la presion instantanea esta por encima de la nominal:
+	 	3.2.1) se emite una alerta
+	 	
+	 caso 3) la presion del sistema es la nominal
+	 	3.3.1) se pasa al paso (3)
+	 	
+	 
+	 					
+4) se hace display de valores actuales en display lcd
+	 4.1) Valores a mostrar en pantalla:
+	 	4.1.1) presion de operacion (presion maxima)
+	 	4.1.2) presion de banda muerta (presion minima)
+	 	4.1.3) time delay despues de prender bombas
+	 	4.1.4) estado de entrada de agua de hidrocapital,
+	 					
+	 
+
+
