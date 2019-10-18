@@ -15,41 +15,42 @@ AUTOR: Santos Michelena
 #define Internet_H
 
 class Internet{
-
-    private:
-        WiFiClient c;
-        PubSubClient cliente;
-
-        //string que contiene pagina html completa
-        String paginaHTML;
-
-        //datos modo access point
-        String ssid_ap;
-        String pass_ap;
-
-        //datos modo conectado a red local
-        String ssid_hn;
-        String pass_hn;
-
-        //datos servidor mqtt
-        String mqtt_ip;
-        String mqtt_user;
-        String mqtt_pass;
-
     public:
-        //CTOR
-        Internet();
-        //DTOR
-        ~Internet();
-        //METODOS ACCESS POINT
-        bool crear_accessp();
-        bool kill_accessp();
-        //METODOS WIFI
-        bool conectar_WIFI();
-        //METODOS MQTT
-        bool conectar_MQTT();
-        void publicar(String);
-        String recibir();
+    
+    WiFiServer server;
+    WiFiClient c;
+    PubSubClient cliente;
+
+    //datos modo access point
+    String ssid_ap;
+    String pass_ap;
+
+    //datos modo conectado a red local
+    String ssid_hn;
+    String pass_hn;
+
+    //datos servidor mqtt
+    String mqtt_ip;
+    String mqtt_user;
+    String mqtt_pass;
+
+    //METODOS
+
+    //CTOR
+    Internet(char);
+    //DTOR
+    ~Internet();
+    //METODOS ACCESS POINT
+    void crear_accessp(String, String);
+    void pagina();
+    bool kill_accessp();
+    //METODOS WIFI
+    void conectar_WIFI();
+    //METODOS MQTT
+    void conectar_MQTT();
+    void subscribir_MQTT();
+    void publicar(char, String);
+    String recibir();
 
 
 
