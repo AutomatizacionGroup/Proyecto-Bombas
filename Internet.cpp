@@ -15,14 +15,14 @@ const char* paginaHTML = "<!DOCTYPE html>"
 ;
 
 
-
-//CTOR para access point
+//CONSTRUCTOR PARA OPERACION COMO ACCESS POINT  
 Internet::Internet(String ssid, String pass){
     WiFiServer server(80); //crea servidor en puerto 80
     ssid_ap = ssid;
     pass_ap = pass;
 }
 
+//CONSTRUCTOR PARA OPERACION DE ESTADO ESTACIONARIO
 Internet::Internet(String ssid, String pass, String mqtt_us, String mqtt_p, String mqtt_add){
     WiFiClient c;
     PubSubClient cliente(c);
@@ -33,6 +33,7 @@ Internet::Internet(String ssid, String pass, String mqtt_us, String mqtt_p, Stri
     mqtt_ip = mqtt_add;
 }
 
+//CONFIGURA Y CREA EL ACCESS POINT
 void Internet::crear_accessp(String ssid, String pass){
     Serial.print("creando punto de acceso …");
     while(!WiFi.softAP(ssid.c_str(), pass.c_str())){
@@ -46,6 +47,7 @@ void Internet::crear_accessp(String ssid, String pass){
 
 }
 
+//PAGINA DE SERVIDOR WEB
 void Internet::pagina(){
     WiFiClient client = server.available();
     while(!client){
@@ -64,11 +66,13 @@ void Internet::pagina(){
     }
 }
 
+//TUMBAR ACCESS POINT
 void Internet::kill_accessp(){
     WiFi.softAPdisconnect(true);
     server.~WiFiServer();
 }
 
+//CONECTAR A RED LOCAL DE WIFI  
 void Internet::conectar_WIFI(){
     delay(10);
     Serial.print("conectandose a: ");
@@ -94,6 +98,7 @@ void Internet::subscribir_MQTT(){
     cliente.subscribe("sistema-bombas/nivel-tanque");
 }
 
+//CONECTAR A SERVIDOR MQTT
 void Internet::conectar_MQTT(){
     while(!cliente.connected()){
         //id de cliente
