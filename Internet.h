@@ -37,13 +37,14 @@ class Internet{
     //METODOS
 
     //CTOR
-    Internet(char);
+    Internet(String, String);
+    Internet(String, String, String, String, String);
     //DTOR
     ~Internet();
     //METODOS ACCESS POINT
     void crear_accessp(String, String);
     void pagina();
-    bool kill_accessp();
+    void kill_accessp();
     //METODOS WIFI
     void conectar_WIFI();
     //METODOS MQTT

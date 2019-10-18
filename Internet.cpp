@@ -16,17 +16,21 @@ const char* paginaHTML = "<!DOCTYPE html>"
 
 
 
+//CTOR para access point
+Internet::Internet(String ssid, String pass){
+    WiFiServer server(80); //crea servidor en puerto 80
+    ssid_ap = ssid;
+    pass_ap = pass;
+}
 
-Internet::Internet(char modo){
-    if (modo == 'A'){
-        WiFiServer server(80); //crea servidor en puerto 80
-    }
-    else {
-        WiFi.softAPdisconnect(true);
-        server.~WiFiServer();
-        WiFiClient c;
-        PubSubClient client(c);
-    }
+Internet::Internet(String ssid, String pass, String mqtt_us, String mqtt_p, String mqtt_add){
+    WiFiClient c;
+    PubSubClient cliente(c);
+    ssid_hn = ssid;
+    pass_hn = pass;
+    mqtt_user = mqtt_us;
+    mqtt_pass = mqtt_p;
+    mqtt_ip = mqtt_add;
 }
 
 void Internet::crear_accessp(String ssid, String pass){
@@ -58,6 +62,11 @@ void Internet::pagina(){
             }
         }
     }
+}
+
+void Internet::kill_accessp(){
+    WiFi.softAPdisconnect(true);
+    server.~WiFiServer();
 }
 
 void Internet::conectar_WIFI(){
