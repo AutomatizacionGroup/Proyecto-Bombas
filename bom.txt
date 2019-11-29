@@ -1,0 +1,31 @@
+1) 3 preso switches digitales
+2) 2 flujo switches digitales
+3) 1 preso-stato analogico .5-4.5 vdc
+4) 4 pulsadores 
+5) 1 board de i2C
+6) una pantalla lcd 16x2
+7) un espressif esp32 dev module v4
+
+
+IO listing:
+//PINS de botones en el arduino.
+const int boton1 = 34;
+const int boton2 = 35;
+const int botonS = 36;
+const int botonR = 39;
+
+//PINS de lectura analogica
+const int presionDescarga = 33;
+
+//PINS de lectura digital
+const int flow1 = 16;
+const int flow2 = 17;
+const int entradaHc = 18;
+const int altaPresion = 19;
+const int bajaPresion = 26;
+const int bomba1desc = 27;
+const int bomba2desc = 23;
+
+//PINS de salida digital
+const int bomba1 = 32;
+const int bomba2 = 25;
